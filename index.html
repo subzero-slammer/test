@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>首页</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="/boardgame/css/index_game.css">
+    <script src="/boardgame/js/vue.min.js"></script>
+    <script src="/boardgame/js/jquery.min.js"></script>
+    <script src="/boardgame/js/bootstrap.min.js"></script>
+    <script src="/boardgame/js/custom_function.js"></script>
+    <script src="/boardgame/js/axios.min.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <div id="navbar">
+        <ul>
+		<li><a href="/boardgame/index.html">首页</a></li>
+            	<li><a href="/boardgame/chat.html">好友</a></li>
+            	<li v-if="userid"><a href="/boardgame/person_center.html">{{username}}</a></li>
+            	<li v-if="!userid"><a href="/boardgame/person_center.html">个人中心</a></li>
+            	<li><a href="/boardgame/login.html">登录/注册</a></li>
+        </ul>
+    </div>
+    <div style="width:100%;height:20px;background-color: #F5F5F5;"></div>
+    <div id="main">
+        <div id="content">
+            <div class="container">
+                <div v-if="userid">
+                    <div v-if="inRoomid">
+                        <div id="title1">
+                            <h>加入的房间:</h>
+                        </div>
+                        <h2>想进入房间请先退出当前所在的房间!</h2>
+
+                        <div id="form" class="form">
+                            <form class="form-control" action="/boardgame/room/joinRoom" method="post">
+                                <input type="hidden" name="uid" v-model="userid"/>
+                                <input type="hidden" name="rid" v-model="inRoomid"/>
+                                <label v-text="inRoomname"></label>
+                                <input id="startgame" type="submit" value="回到房间"/>
+                            </form>
+                            <input id="startgame" type="submit" @click="outRoom" value="退出房间"/>
+                        </div>
+
+                    </div>
+                    <div v-show="!inRoomid">
+                        <div id="title1">
+                            <h>创建房间</h>
+                        </div>
+
+
+                        <div id="form" class="form">
+                            <form class="form-control" action="/boardgame/room/createRoom" method="post">
+                                <input type="hidden" name="host_id" v-model="userid"/>
+                                <input type="hidden" name="host_name" v-model="username"/>
+                                <input type="hidden" name="gid" value="1"/>
+                                <label>房间名</label><input type="text" name="roomname"/>
+                                </br>
+                                <label>房间密码：</label><input type="text" name="password"/>
+                                </br>
+                                <label>房间人数：</label><input type="text" name="person_num" value="4"/>
+                                </br>
+                                <input type="submit" value="创建房间"/>
+                            </form>
+                        </div>
+
+                        <div id="title1">
+                            <h>搜索房间</h>
+                        </div>
+
+                        <div id="form" class="form">
+                            <div class="form-control">
+                                <label>搜索房间名：</label><input type="text" @keyup="searchRoom" @mousemove="searchRoom" v-model="searchRoomname"/>
+                            </div>
+                        </div>
+
+                        <div id="form" class="form" v-for="item in roomList">
+                            <form class="form-control" action="/boardgame/room/joinRoom" method="post">
+                                <label>房间名：</label><span>{{item.roomname}}</span>
+                                <label v-show="item.is_start==1" style="color: red">已开始</label><label
+                                    v-show="item.is_start==0" style="color: green">未开始</label>
+                                <div><label>请输入房间密码：</label></div><input type="text" name="password"/>
+                                <input type="hidden" name="uid" v-model="userid"/>
+                                <input type="hidden" name="username" v-model="username"/>
+                                <input type="hidden" name="rid" v-model="item.rid"/>
+                                <input type="submit" value="加入房间"/>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <div v-if="!userid">
+
+                    <div id="title1">
+                        <h>请先登录</h>
+                    </div>
+                    <a color="black" href="login.html">点击登录</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer"></div>
+</div>
+</body>
+<script src="/boardgame/js/index.js"></script>
+</html>

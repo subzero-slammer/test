@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>聊天</title>
+	<meta charset="utf-8" />
+    <script src="/boardgame/js/vue.min.js"></script>
+    <script src="/boardgame/js/axios.min.js"></script>
+    <script src="/boardgame/js/custom_function.js"></script>
+    <link rel="stylesheet" type="text/css" href="/boardgame/css/chat.css">
+    
+  </head>
+  
+  <body>
+    <div id="app">
+    	<div id="navbar">
+        	<ul>
+            		<li><a href="/boardgame/index.html">首页</a></li>
+            		<li><a href="/boardgame/chat.html">好友</a></li>
+            		<li v-if="userid"><a href="/boardgame/person_center.html">{{username}}</a></li>
+            		<li v-if="!userid"><a href="/boardgame/person_center.html">个人中心</a></li>
+            		<li><a href="/boardgame/login.html">登录/注册</a></li>
+        	</ul>
+        </div>
+        <div style="width:100%;height:20px;background-color: #F5F5F5;"></div>
+        <div id="main">
+        	<div id="content">
+        		<div class="container">
+        			<h>聊天</h>
+        		</div>
+                <div id="chat">
+                    <div id="friendbody">
+                        <div id="findfriendsbody">
+                            <input id="findfriends" type="text" placeholder="请在这里输入用户名"
+                                   v-model="findFriend" @keyup="findfriend()" value={{findFriend}} />
+                        </div>
+                        <div id="allfriend">
+                            <table class="friendtable" v-if="!searching">
+                                <tr v-for="u in userList">
+                                    <td><div class="friend" @click="selectFriend(u)">
+                                        <img class="img" src="/boardgame/images/img.jpeg" width="60px" height="50px">
+                                        <div class="name">{{u.username}}</div>
+                                    </div></td>
+                                </tr>
+                            </table>
+                            <table class="friendtable" v-if="searching">
+                                <tr v-for="u in searchingList">
+                                    <td><div class="friend">
+                                        <img class="img" src="/boardgame/images/img.jpeg" width="60px" height="50px">
+                                        <div class="name">{{u.username}}</div>
+                                        <a href="#"><div class="circle" @click="addfriend(u.uid)">+</div></a>
+                                    </div></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="chatBody">
+                        <div class="chatName">
+                            <div class="nameandmask">
+                                <h2 class="chatingName" v-model="chating">{{chating.username}}</h2>
+                                <div class="state" v-if="online">
+                                    <div id="onlinemask"></div>
+                                    <div class="onlinestate">在线</div>
+                                </div>
+                                <div class="state" v-if="!online&&haveselected">
+                                    <div id="falseonlinemask"></div>
+                                    <div class="onlinestate">离线</div>
+                                </div>
+                            </div>
+                            <div class="sendgold" title="送金币" v-if="haveselected&&!sendgold_or_not" style="background: url('/boardgame/images/gold.png');
+                            background-size: cover" @click="sendgold"></div>
+                            <div class="newfriend" style="background:url('/boardgame/images/newfriend.jpg');background-size:cover"
+                            id="button1"><div class="newfriendcircle" v-if="applyers.length>0"></div></div>
+                        </div>
+                        <div id="chatMessage">
+                            <table class="chattable">
+                                <tr v-for="c in chatMessage">
+                                    <td class="messagebody" v-if="c.receiveid==userid">
+                                        <div>
+                                            <img class="receivedimg" src="/boardgame/images/img.jpeg"  width="60px" height="50px">
+                                            <div class="receivedmessage">{{c.message}}</div>
+                                        </div>
+                                    </td>
+                                    <td class="messagebody" v-if="c.sendid==userid">
+                                        <div>
+                                            <img class="sendedimg" src="/boardgame/images/img.jpeg"  width="60px" height="50px">
+                                            <div class="sendedmessage">{{c.message}}</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="sendMessage">
+                            <div id="senddiv"><textarea v-model="message" class="sendtext" rows="5" cols="30">{{message}}</textarea></div>
+                            <input class="sendButton" type="submit" value="发送" @click="sendmessage">
+                        </div>
+                    </div>
+                </div>
+        	</div>
+        </div>
+        <!--模态框-->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="title">
+                    <div class="newfriendtitle">好友申请</div>
+                    <div id="closeBtn" class="close">×</div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-control" >
+                        <div class="newapply">
+                            <table class="applyer">
+                                <tr v-for="u in applyers">
+                                    <td class="eachapplyerbox" v-if="applyers.length>0">
+                                        <div class="eachapplyer">
+                                            <img class="eachapplyerimg" src="/boardgame/images/img.jpeg" width="60px" height="50px"/>
+                                            <div class="applyermessage">
+                                                <div class="applyername">{{u.username}}</div>
+                                                <div class="gender" v-if="u.gender=='男'" style="color: blue;">♂</div>
+                                                <div class="gender" v-if="u.gender=='女'" style="color: deeppink;">♀</div>
+                                                <input class="acceptapply" type="submit" @click="accept(u.uid)" value="同意"/>
+                                                <input class="rejectapply" type="submit" @click="reject(u.uid)" value="拒绝"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <input type="button" id="button2" @click="acceptall" value="全部同意" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+
+        </div>
+        <div id="footer"></div>
+    </div>
+  </body>
+  <script src="/boardgame/js/chat.js"></script>
+</html>

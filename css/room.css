@@ -1,0 +1,383 @@
+@CHARSET "UTF-8";
+* {
+    padding: 0px;
+    margin: 0;
+}
+
+a {
+    color: #0174DF;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0174DF;
+}
+
+p {
+    font-family: Verdana, Arial, '宋体';
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    line-height: 30px;
+}
+
+h {
+    font-family: inherit;
+    font-size: 18px;
+}
+
+#app {
+    width: 80%;
+    margin: 0 auto;
+}
+
+#navbar {
+    width: 100%;
+}
+
+#navbar ul {
+    background-color: #0040FF;
+    padding-left: 20px;
+}
+
+#navbar ul li {
+    display: inline-block;
+    height: 42px;
+    line-height: 42px;
+}
+
+#navbar ul li a {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    width: 120px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+#navbar ul li a:hover {
+    background-color: #fff;
+    color: #0174DF;
+}
+
+#main {
+    padding: 0px 15px;
+    background-color: #F5F5F5;
+
+}
+
+#content {
+    height: 100%;
+    border: 1px solid #F5F5F5;
+    border-radius: 10px;
+
+    background-color: white;
+
+}
+
+.container {
+
+    border-radius: 10px;
+    margin-left: 20px;
+    overflow: hidden;
+    width: 95%;
+    height: 100%;
+    max-width: 100%;
+}
+
+#footer {
+    height: 20px;
+    background-color: #F5F5F5;
+}
+
+#left {
+    height: 100%;
+    width: 75%;
+    /* background-color:#0174DF; */
+    float: left;
+}
+
+
+#top {
+
+    height: 60%;
+    width: 100%;
+    /* background-color:yellow; */
+}
+
+#mycard {
+
+    height: 40%;
+    width: 100%;
+    /* background-color:green; */
+    text-align: center
+}
+
+#b {
+    overflow: hidden;
+    display: inline-block;
+}
+
+#hold_player {
+    height: 100%;
+    width: 100%;
+    float: left;
+}
+
+#player {
+    height: 100%;
+    width: 20%;
+    /* background-color:blue; */
+    margin: 0 20px 0 0;
+    float: left;
+}
+
+#player1 {
+    margin: 20px 20px;
+    width: 100%;
+    height: 25px;
+    background-color: #F5F5F5;
+    float: left;
+    border: 1px solid #F5F5F5;
+    border-radius: 7px;
+}
+
+#player2 {
+    margin: 20px 20px;
+    float: left;
+}
+.subtn{
+    width:60px;
+    height: 25px;
+    margin: 20px 20px;
+    float: left;
+}
+
+#card {
+    height: 100%;
+    width: 80%;
+    /* background-color:black; */
+    float: left;
+}
+
+#mycard1 {
+    height: 180px;
+    width: 150px;
+    background-color: yellow;
+    float: left;
+    margin-left: 15px;
+    border: 1px solid #F5F5F5;
+    border-radius: 10px;
+}
+
+#mycard2 {
+    height: 180px;
+    width: 150px;
+    background-color: yellow;
+    float: left;
+    margin-left: 15px;
+    border: 1px solid #F5F5F5;
+    border-radius: 10px;
+}
+
+#mycard3 {
+    height: 180px;
+    width: 150px;
+    background-color: yellow;
+    float: left;
+    margin-left: 15px;
+    border: 1px solid #F5F5F5;
+    border-radius: 10px;
+}
+
+#mycard4 {
+    height: 180px;
+    width: 150px;
+    background-color: yellow;
+    float: left;
+    margin-left: 15px;
+    border: 1px solid #F5F5F5;
+    border-radius: 10px;
+}
+
+#box1 {
+    height: 180px;
+    width: 150px;
+    background-color: yellow;
+    float: left;
+    margin-left: 15px;
+    margin-top: 40px;
+    border: 1px solid #F5F5F5;
+    border-radius: 10px;
+}
+
+#box2 {
+    height: 180px;
+    width: 150px;
+    background-color: yellow;
+    float: left;
+    margin-left: 15px;
+    margin-top: 40px;
+    border: 1px solid #F5F5F5;
+    border-radius: 10px;
+}
+
+#box3 {
+    height: 180px;
+    width: 150px;
+    background-color: yellow;
+    float: left;
+    margin-left: 15px;
+    margin-top: 40px;
+    border: 1px solid #F5F5F5;
+    border-radius: 10px;
+}
+
+#box4 {
+    height: 180px;
+    width: 150px;
+    background-color: yellow;
+    float: left;
+    margin-left: 15px;
+    margin-top: 40px;
+    border: 1px solid #F5F5F5;
+    border-radius: 10px;
+}
+
+#title1{
+    margin-top: 20px;
+    height:100%;
+    border:1px solid #F5F5F5;
+    border-radius: 10px;
+    background-color:#0174DF;}
+
+h{
+    font-family: inherit;
+    font-size: 18px;
+    color:white;
+    margin-left:20px;
+}
+
+#startgame{
+    background-color: #0174DF;
+    border: 2px solid #0174DF;
+    border-radius: 4px;
+    color: #fff;
+    display: block;
+    font-family: inherit;
+    font-size: 16px;
+    padding: 10px;
+    width: 70%;
+}
+
+.form {
+    padding: 30px 40px;
+}
+
+.form button {
+    background-color: #0174DF;
+    border: 2px solid #0174DF;
+    border-radius: 4px;
+    color: #fff;
+    display: block;
+    font-family: inherit;
+    font-size: 16px;
+    padding: 10px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.form-control {
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    position: relative;
+    float: left;
+}
+
+.form-control label {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.form-control input {
+    border: 2px solid #f0f0f0;
+    border-radius: 4px;
+    display: block;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 10px;
+    width: 100%;
+}
+
+.form-control input:focus {
+    outline: 0;
+    border-color: #777;
+}
+
+
+/*聊天区*/
+
+#chat {
+    height: 500px;
+    width: 24%;
+    border: 2px solid #b3b3b3;
+    float: right;
+    border-radius:10px;
+}
+#chattitle{
+    width:100%;
+    height:20px;
+    background-color: #3f7dff;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 20px;
+    margin:0 0 10px 0;
+}
+#chatbox{
+    width:100%;
+    height:470px;
+}
+#chatmessage{
+    width:90%;
+    height:380px;
+    margin:0 auto;
+    overflow-y:scroll;
+    background: #ededed;
+}
+#sendbox{
+    width:100%;
+    height:60px;
+}
+#sendtext{
+    width:99%;
+    height:40px;
+    margin:0 auto;
+    resize:none;
+    border-bottom:1px solid #dbdbdb;
+}
+#sendbtn{
+    width:60px;
+    height:30px;
+    float:right;
+    margin:5px 20px;
+    border-radius: 4px;
+}
+
+.sendedmessage,.receivedmessage{
+    max-width: 150px;
+    min-width: 10px;
+    margin:10px 10px;
+    float:left;
+    word-break: break-all;
+    word-wrap: break-word;
+    white-space: normal;
+    background-color: #40ffe3;
+    padding:6px;
+    border-radius: 6px;
+}
+
+.name{
+    margin:0 10px;
+}

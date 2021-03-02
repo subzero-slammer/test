@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>房间</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="/boardgame/css/room.css">
+    <script src="/boardgame/js/vue.min.js"></script>
+    <script src="/boardgame/js/jquery.min.js"></script>
+    <script src="/boardgame/js/bootstrap.min.js"></script>
+    <script src="/boardgame/js/custom_function.js"></script>
+    <script src="/boardgame/js/axios.min.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <div id="navbar">
+        <ul>
+            <li><a href="/boardgame/index.html">首页</a></li>
+            <li><a href="/boardgame/chat.html">好友</a></li>
+            <li v-if="userid"><a href="/boardgame/person_center.html">{{username}}</a></li>
+            <li v-if="!userid"><a href="/boardgame/person_center.html">个人中心</a></li>
+            <li><a href="/boardgame/login.html">登录/注册</a></li>
+        </ul>
+    </div>
+    <div style="width:100%;height:20px;background-color: #F5F5F5;"></div>
+    <div id="main">
+        <div id="content">
+
+            <div class="container">
+
+                <div id="left" v-if="is_start==0">
+                    <div id="top">
+                        <div v-for="item in userList">
+                            <div id="hold_player" v-show="userid==item.uid">
+                                <div id="player"><div id="player1"><p  v-text="username"></p></div>
+
+                                </div>
+                                <span id="player2" v-show="item.is_ready==0" style="color: red">未准备</span>
+                                <span id="player2" v-show="item.is_ready==1" style="color: green">已准备</span>
+                                <button id="player2" v-show="item.is_ready==0" @click="userReady">准备</button>
+                                <button id="player2" v-show="item.is_ready==1" @click="userReady">取消</button>
+                            </div>
+
+                            <div id="hold_player" v-show="userid!=item.uid">
+                                <div id="player"><div id="player1"><p>{{item.username}}</p></div>
+                                </div>
+                                <span id="player2" v-show="item.is_ready==0" style="color: red">未准备</span>
+                                <span id="player2" v-show="item.is_ready==1" style="color: green">已准备</span>
+                                <input type="submit" id="player2" v-if="hostid==userid" @click="userOut(item.uid)" value="踢出房间"/>
+                            </div>
+                        </div>
+                        <input id="startgame" v-show="is_startable&&hostid==userid" type="submit" @click="startGame" value="开始游戏"/>
+                        <input id="startgame" type="submit" @click="outRoom" value="退出房间"/>
+
+                        <div v-show="hostid==userid" id="title1">
+                            <h>修改房间信息</h>
+                        </div>
+
+                        <div v-show="hostid==userid" id="form" class="form">
+                            <div class="form-control">
+                                <label>房间名</label><input type="text" v-model="roomname"/>
+                                </br>
+                                <label>房间密码：</label><input type="text" v-model="password"/>
+                                </br>
+                                <input type="submit" @click="updateRoom" value="修改房间信息"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="left" v-if="is_start==1">
+                    <div id="top">
+                        <div v-for="item in userList">
+                            <div id="hold_player" v-show="userid==item.uid">
+                                <div id="player"><div id="player1"><p  v-text="username"></p></div>
+                                </div>
+                                <span id="player2">票数:{{item.vote_num}}</span>
+                            </div>
+
+                            <div id="hold_player" v-show="userid!=item.uid">
+                                <div id="player"><div id="player1"><p>{{item.username}}</p></div>
+                                </div>
+                                <span id="player2">票数:{{item.vote_num}}</span>
+                                <input class="subtn" type="button" v-show="isvote==0" @click="vote(item.uid)" value="投票"/>
+                            </div>
+                        </div>
+                        <div></div>
+
+                        <div id="form" class="form">
+                            <div class="form-control">
+                                <label>你的词：{{word}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="chat">
+                    <div id="chattitle">聊天区</div>
+                    <div id="chatbox">
+                        <div id="chatmessage">
+                            <table class="chattable" v-if="chatMessage.length>0">
+                                <tr v-for="c in chatMessage">
+                                    <td class="messagebody" v-if="c.sendid!=userid">
+                                        <div>
+                                            <div class="name">{{c.sendname}}:</div>
+                                            <div class="receivedmessage">{{c.message}}</div>
+                                        </div>
+                                    </td>
+                                    <td class="messagebody" v-if="c.sendid==userid">
+                                        <div>
+                                            <div class="name">你:</div>
+                                            <div class="sendedmessage">{{c.message}}</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="sendbox">
+                            <textarea v-model="message" id="sendtext" rows="2" cols="30" @keyup.enter="sendmessage">{{message}}</textarea>
+                            <input @click="sendmessage" id="sendbtn" type="submit" value="发送"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer"></div>
+</div>
+<script type="text/javascript">
+    function clickCard1(id) {
+        var board = document.getElementById("card");
+        var e = document.createElement("input");
+        e.type = "button";
+        e.value = "出牌1";
+        e.id = "box1";
+
+        var object = board.appendChild(e);
+        setTimeout(myfun1, 3000);
+    }
+
+    function clickCard2(id) {
+        var board = document.getElementById("card");
+        var e = document.createElement("input");
+        e.type = "button";
+        e.value = "出牌2";
+        e.id = "box2";
+
+        var object = board.appendChild(e);
+        setTimeout(myfun2, 3000);
+    }
+
+    function clickCard3(id) {
+        var board = document.getElementById("card");
+        var e = document.createElement("input");
+        e.type = "button";
+        e.value = "出牌3";
+        e.id = "box3";
+
+        var object = board.appendChild(e);
+        setTimeout(myfun3, 3000);
+    }
+
+    function clickCard4(id) {
+        var board = document.getElementById("card");
+        var e = document.createElement("input");
+        e.type = "button";
+        e.value = "出牌4";
+        e.id = "box4";
+
+        var object = board.appendChild(e);
+        setTimeout(myfun4, 3000);
+    }
+
+    function myfun1() {
+        document.getElementById("box1").style.display = "none";
+    }
+
+    function myfun2() {
+        document.getElementById("box2").style.display = "none";
+    }
+
+    function myfun3() {
+        document.getElementById("box3").style.display = "none";
+    }
+
+    function myfun4() {
+        document.getElementById("box4").style.display = "none";
+    }
+</script>
+
+</body>
+<script type="text/javascript">
+    $(function () {
+        $("#mycard1").click(function () {
+            $("#mycard1").css("display", "none");
+            event.stopPropagation();
+        });
+        $("#mycard2").click(function () {
+            $("#mycard2").css("display", "none");
+            event.stopPropagation();
+        });
+        $("#mycard3").click(function () {
+            $("#mycard3").css("display", "none");
+            event.stopPropagation();
+        });
+        $("#mycard4").click(function () {
+            $("#mycard4").css("display", "none");
+            event.stopPropagation();
+        });
+    });
+
+</script>
+<script src="/boardgame/js/room.js"></script>
+</html>

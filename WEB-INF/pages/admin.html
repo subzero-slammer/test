@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <link rel="stylesheet" type="text/css" href="/boardgame/css/admin.css">
+    <script src="/boardgame/js/vue.min.js"></script>
+    <script src="/boardgame/js/jquery.min.js"></script>
+    <script src="/boardgame/js/bootstrap.min.js"></script>
+    <script src="/boardgame/js/custom_function.js"></script>
+    <script src="/boardgame/js/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <div style="width:100%;height:20px;background-color: #F5F5F5;"></div>
+        <div id="content">
+            <div class="container">
+                <div style="width:100%;height:20px;background-color: white;border-radius: 10px;"></div>
+
+                <div id="title1"><h>用户信息</h></div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="id1">id</th>
+                        <th class="name1">name</th>
+                        <th class="password1">password</th>
+                        <th class="gender1">gender</th>
+                        <th class="phone1">phone</th>
+                        <th class="email1">email</th>
+                        <th class="opetate">operate</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="u in userList">
+                        <td width="5%">{{u.uid}}</td>
+                        <td width="10%">{{u.username}}</td>
+                        <td width="10%">{{u.password}}</td>
+                        <td width="10%">{{u.gender}}</td>
+                        <td width="10%">{{u.phone}}</td>
+                        <td width="10%">{{u.email}}</td>
+                        <td width="20%">
+                            <button type="button" @click="deleteUser(u.uid)">删除</button>
+                            <button type="button" @click="findById(u.uid)">详情</button>
+                        </td>
+                    </tr>
+                </table>
+
+
+
+                <div style="width:100%;height:20px;background-color: white;border-radius: 10px;"></div>
+            </div>
+            <div style="width:100%;height:20px;background-color: white;border-radius: 10px;"></div>
+
+                <div id="title1"><h>添加用户</h></div>
+                <div>
+                    <div id="form" class="form">
+                        <div>
+                            <div class="form-control">
+                                <div>
+                                <label>ID</label>
+                                <input type="text" id="ID" v-model="user1.uid" />
+                                </div>
+
+                                <div>
+                                <label for="username">用户名</label>
+                                <input type="text" id="username" v-model="user1.username"/>
+                                </div>
+
+                                <div>
+                                    <label for="username">密码</label>
+                                    <input type="text" v-model="user1.password"/>
+                                </div>
+
+                                <div>
+                                <label for="username">性别</label>
+                                <input type="gender" id="gender" v-model="user1.gender"/>
+                                </div>
+
+
+                                <div>
+                                <label for="username">手机号</label>
+                                <input type="text" id="phone" v-model="user1.phone"/>
+                                </div>
+
+                                <div>
+                                <label for="username">邮件</label>
+                                <input type="text" id="email" v-model="user1.email"/>
+                                </div>
+
+                                <button type="submit" @click="addUser(user1)">添加</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            <div id="title1"><h>搜索用户</h></div>
+
+            <div>
+                <form id="form" class="form">
+                    <div>
+                        <div class="form-control">
+                            <input type="text" v-model="user.username"/>
+                            <input type="button" @click="findByName(user.username)" value="搜索"></input>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    <!-- 模态框 -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-control1" >
+                    <div>
+                        <div>
+                            <div>
+                                <label>
+                                    name:
+                                    <input type="text"  name="name" v-model="user.username"/>
+                                </label>
+                                <label>
+                                    password:
+                                    <input type="text" v-model="user.password"/>
+                                </label>
+                                <label>
+                                    gender:
+                                    <input type="text" v-model="user.gender"/>
+                                </label>
+                                <label>
+                                    phone:
+                                    <input type="text" v-model="user.phone"/>
+                                </label>
+                                <label>
+                                    email:
+                                    <input type="text" v-model="user.email"/>
+                                </label>
+                                <label>
+                                        <input id="subtn" type="submit" @click="updateUser(user)" value="更改"/>
+                                        <input id="excelbtn" type="submit" @click="findAll" value="取消"/>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+    <div id="footer"></div>
+
+    <!-- 模态框 -->
+    <div id="myModal1">
+        <table>
+            <thead>
+            <tr>
+                <th class="id1">id</th>
+                <th class="name1">name</th>
+                <th class="password1">password</th>
+                <th class="gender1">gender</th>
+                <th class="phone1">phone</th>
+                <th class="email1">email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="u1 in userList1">
+                <td width="5%">{{u1.uid}}</td>
+                <td width="10%">{{u1.username}}</td>
+                <td width="10%">{{u1.password}}</td>
+                <td width="10%">{{u1.gender}}</td>
+                <td width="10%">{{u1.phone}}</td>
+                <td width="10%">{{u1.email}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+<script src="/boardgame/js/admin.js"></script>
+</html>

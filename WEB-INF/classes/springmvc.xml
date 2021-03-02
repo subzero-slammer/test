@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--开启注解扫描，只扫描Controller注解-->
+    <context:component-scan base-package="com.boardgame">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+    <!--配置的视图解析器对象-->
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="freemarkerSettings">
+            <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+                <property name="properties">
+                    <props>
+                        <prop key="default_encoding">utf-8</prop>
+                        <prop key="output_encoding">utf-8</prop>
+                    </props>
+                </property>
+            </bean>
+        </property>
+        <property name="templateLoaderPath">
+            <value>/WEB-INF/pages/</value>
+        </property>
+    </bean>
+    <bean id="htmlviewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="suffix" value=".html" />
+        <property name="order" value="0" />
+        <property name="contentType" value="text/html;charset=UTF-8" />
+    </bean>
+
+
+    <!--jason格式数据转换-->
+    <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="objectMapper">
+            <bean class="com.fasterxml.jackson.databind.ObjectMapper">
+                <property name="dateFormat">
+                    <bean class="java.text.SimpleDateFormat">
+                        <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <!--过滤静态资源-->
+    <mvc:resources location="/css/" mapping="/css/**" />
+    <mvc:resources location="/images/" mapping="/images/**" />
+    <mvc:resources location="/js/" mapping="/js/**" />
+    <mvc:resources location="/" mapping="/*.html" />
+
+    <!--开启SpringMVC注解的支持-->
+    <mvc:annotation-driven/>
+
+</beans>

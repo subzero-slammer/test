@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>登录注册</title>
+    <link rel="stylesheet" type="text/css" href="/boardgame/css/login.css">
+    <script src="/boardgame/js/vue.min.js"></script>
+    <script src="/boardgame/js/jquery.min.js"></script>
+    <script src="/boardgame/js/bootstrap.min.js"></script>
+    <script src="/boardgame/js/custom_function.js"></script>
+    <script src="/boardgame/js/axios.min.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <div class="login_warp">
+        <div class="loginbox fl">
+            <div class="login_header">
+                <span @click="cur=0" :class="{active:cur==0}">用户注册</span>
+                <span @click="cur=1" :class="{active:cur==1}">用户登录</span>
+                <span @click="cur=2" :class="{active:cur==2}">管理员登录</span>
+            </div>
+            <div class="login_content">
+                <div v-show="cur==0" class="Cbody_item">
+                    <div class="form_item"><input type="text" name="fname" placeholder="用户名" @keyup="searchUser"
+                                                  v-model="username"/></div>
+                    <span :style="userExistColor" v-text="userExist"></span>
+                    <div class="form_item"><input type="password" name="fpassword" placeholder="密码" v-model="password"/>
+                    </div>
+                    <div class="form_item"><input type="password" name="fpassword" placeholder="再次确认密码"
+                                                  v-model="password2"/></div>
+                    <div class="form_item">
+                        <input type="submit" name="" @click="registerUser" value="注册"/>
+                    </div>
+                </div>
+                <div v-show="cur==1" class="Cbody_item">
+                    <div class="form_item"><input type="text" name="fname" placeholder="用户名" v-model="username"/></div>
+                    <div class="form_item"><input type="password" name="fpassword" placeholder="密码" v-model="password"/>
+                    </div>
+                    <div class="form_item">
+                        <input type="submit" name="" @click="login" value="登录"/>
+                    </div>
+                </div>
+                <div v-show="cur==2" class="Cbody_item">
+                    <form action="/boardgame/admin/adminLogin" method="post" class="form_item">
+                        <input type="text" name="adminname" placeholder="用户名" v-model="username"/>
+                        <input type="password" name="password" placeholder="密码" v-model="password"/>
+                        <input type="submit" value="登录"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/boardgame/js/login.js"></script>
+</html>
